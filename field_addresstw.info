@@ -5,3 +5,6 @@ core = 7.x
 
 files[] = field_addresstw.install
 files[] = field_addresstw.module
+
+; dependencies
+dependencies[] = jquery_update
