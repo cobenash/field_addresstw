@@ -4,15 +4,15 @@
  * Implements hook_library().
  */
 function field_addresstw_library() {
-    $libraries['zipcodetw'] = array(
-        'title' => 'jQuery-TWzipcode',
-        'website' => 'https://github.com/essoduke/jQuery-TWzipcode',
-        'version' => '2.0',
-        'js' => array(
-            drupal_get_path('module', 'field_addresstw') . '/library/jquery.twzipcode.min.js' => array(),
-        ),
-    );
-    return $libraries;
+  $libraries['zipcodetw'] = array(
+      'title' => 'jQuery-TWzipcode',
+      'website' => 'https://github.com/essoduke/jQuery-TWzipcode',
+      'version' => '2.0',
+      'js' => array(
+          drupal_get_path('module', 'field_addresstw') . '/library/jquery.twzipcode.min.js' => array(),
+      ),
+  );
+  return $libraries;
 }
 
 
@@ -21,15 +21,15 @@ function field_addresstw_library() {
  * @see https://api.drupal.org/api/drupal/modules%21field%21field.api.php/function/hook_field_info/7.x
  */
 function field_addresstw_field_info() {
-    return array(
-      'field_addresstw_taiwan' => array(
-        'label' => t('Taiwan Address Field'),
-        'description' => t('Create an address field for taiwan and can choose the county, district, zipcode.'),
-        'default_widget' => 'field_addresstw_selection',
-        'default_formatter' => 'field_addresstw_full_text',
-      ),
-    );
-  }
+  return array(
+    'field_addresstw_taiwan' => array(
+      'label' => t('Taiwan Address Field'),
+      'description' => t('Create an address field for taiwan and can choose the county, district, zipcode.'),
+      'default_widget' => 'field_addresstw_selection',
+      'default_formatter' => 'field_addresstw_full_text',
+    ),
+  );
+}
 
 /**
  * Validate this module's field data.
@@ -38,30 +38,30 @@ function field_addresstw_field_info() {
  * reference). There is no return value.
  */
 function field_addresstw_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
-    foreach ($items as $delta => $item) {
-      if (!empty($item['addresstw'])) {
-        if (drupal_strlen($item['addresstw']) > 30) {
-          $errors[$field['field_name']][$langcode][$delta][] = array(
-            'error' => 'text_max_length',
-            'message' => t('%name: the value may not be longer than %max characters.', array('%name' => $instance['label'], '%max' => 30)),
-          );
-        }
+  foreach ($items as $delta => $item) {
+    if (!empty($item['addresstw'])) {
+      if (drupal_strlen($item['addresstw']) > 30) {
+        $errors[$field['field_name']][$langcode][$delta][] = array(
+          'error' => 'text_max_length',
+          'message' => t('%name: the value may not be longer than %max characters.', array('%name' => $instance['label'], '%max' => 30)),
+        );
       }
     }
   }
+}
   
   
-  /**
-   * Implements hook_field_is_empty().
-   */
-  function field_addresstw_field_is_empty($item, $field) {
-    //若有寫郵遞區號，但是沒有寫地址，也可以給過。
-    // if(empty($item['zipcode']) and empty($item['county']) and empty($item['district']) and  empty($item['addresstw']) ){
-    //     return TRUE;
-    // }
-    // return FALSE;
-    return empty($item['addresstw']);
-  }
+/**
+ * Implements hook_field_is_empty().
+ */
+function field_addresstw_field_is_empty($item, $field) {
+  //若有寫郵遞區號，但是沒有寫地址，也可以給過。
+  // if(empty($item['zipcode']) and empty($item['county']) and empty($item['district']) and  empty($item['addresstw']) ){
+  //     return TRUE;
+  // }
+  // return FALSE;
+  return empty($item['addresstw']);
+}
 
 
 /**
@@ -75,6 +75,14 @@ function field_addresstw_field_formatter_info() {
       ),
       'field_addresstw_simple_text' => array(
         'label' => t('Simple Taiwan Address Text'),
+        'field types' => array('field_addresstw_taiwan'),
+      ),
+      'field_addresstw_county_distrinct' => array(
+        'label' => t('Conuty and Distrinct only'),
+        'field types' => array('field_addresstw_taiwan'),
+      ),
+      'field_addresstw_zipcode' => array(
+        'label' => t('Zipcode only'),
         'field types' => array('field_addresstw_taiwan'),
       ),
     );
@@ -164,7 +172,6 @@ function field_addresstw_field_widget_error($element, $error, $form, &$form_stat
         $error_element = $element[$element['#columns'][0]];
         break;
     }
-  
     form_error($error_element, $error['message']);
   }
 
@@ -173,43 +180,39 @@ function field_addresstw_field_widget_error($element, $error, $form, &$form_stat
  *
  */
 function field_addresstw_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-    $element = array();
-    $settings = $display['settings'];
   
-    switch ($display['type']) {
-      case 'field_addresstw_full_text':
-        foreach ($items as $delta => $item) {
-          $element[$delta] = array(
-              '#markup' => '<span class="addresstw-zipcode">'.$item['zipcode'].'</span><span class="addresstw-county">'.$item['county'].'</span><span class="addresstw-district">'.$item['district'].'</span><span class="addresstw-address">'.$item['addresstw'].'</span>',
-          );
-        }
-        break;
-      case 'field_addresstw_simple_text':
-        foreach ($items as $delta => $item) {
-          $element[$delta] = array(
-              '#markup' => '<span class="addresstw-county">'.$item['county'].'</span><span class="addresstw-district">'.$item['district'].'</span><span class="addresstw-address">'.$item['addresstw'].'</span>',
-          );
-        }
-        break;
-    }
-  
-    return $element;
+  $element = array();
+  $settings = $display['settings'];
+
+  switch ($display['type']) {
+    case 'field_addresstw_full_text':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array(
+            '#markup' => '<span class="addresstw-zipcode">'.$item['zipcode'].'</span><span class="addresstw-county">'.$item['county'].'</span><span class="addresstw-district">'.$item['district'].'</span><span class="addresstw-address">'.$item['addresstw'].'</span>',
+        );
+      }
+      break;
+    case 'field_addresstw_simple_text':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array(
+            '#markup' => '<span class="addresstw-county">'.$item['county'].'</span><span class="addresstw-district">'.$item['district'].'</span><span class="addresstw-address">'.$item['addresstw'].'</span>',
+        );
+      }
+      break;
+    case 'field_addresstw_county_distrinct':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array(
+            '#markup' => '<span class="addresstw-county">'.$item['county'].'</span><span class="addresstw-district">'.$item['district'].'</span>',
+        );
+      }
+      break;
+    case 'field_addresstw_zipcode':
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array(
+            '#markup' => '<span class="addresstw-zipcode">'.$item['zipcode'].'</span>',
+        );
+      }
+      break;
   }
-
-
-/**
- * Implements hook_theme().
- */
-function field_addresstw_theme($existing, $type, $theme, $path) {
-  return array(
-    'addresstw_full' => array(
-      'arguements' => array(),
-    ),
-
-  );
-}
-
-function theme_addresstw_full($variables) {
-  
-  return '<div class="field-addresstw-wrapper">123</div>';
+  return $element;
 }
