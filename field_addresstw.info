@@ -1,0 +1,7 @@
+name = addresstw field
+description = A field for taiwan address
+package = Fields
+core = 7.x
+
+files[] = field_addresstw.install
+files[] = field_addresstw.module

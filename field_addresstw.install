@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the field_example module.
+ */
+
+ /**
+ * Implements hook_field_schema().
+ */
+function field_addresstw_field_schema($field) {
+    $columns = array(
+      'county' => array('type' => 'varchar', 'length' => 6, 'not null' => FALSE), //縣市
+      'district' => array('type' => 'varchar', 'length' => 6, 'not null' => FALSE), //區域
+      'zipcode' => array('type' => 'varchar', 'length' => 6, 'not null' => FALSE), //郵遞區號
+      'addresstw' => array('type' => 'varchar', 'length' => 30, 'not null' => FALSE), //地址
+    );
+    $indexes = array(
+      'addresstw' => array('addresstw'),
+    );
+    return array(
+      'columns' => $columns,
+      'indexes' => $indexes,
+    );
+  }
+  
