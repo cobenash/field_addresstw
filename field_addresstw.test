@@ -97,14 +97,17 @@ class FieldAddresstwTest extends DrupalWebTestCase {
         // Submit data.
         $edit = array(
             'field_address[und][0][zipcode]' => '106',
-            'field_address[und][0][county]' => '臺北市',
-            'field_address[und][0][district]' => '大安區',
-            'field_address[und][0][addresstw]' => '仁愛路4段345巷4弄47號2樓',
+            'field_address[und][0][county]' => 'Taipei',
+            'field_address[und][0][district]' => 'daan',
+            'field_address[und][0][addresstw]' => 'renai road 345 ally',
             'title' => 'Sample Test Address Taiwan field',
         );
 
         $this->drupalPost(NULL, $edit, t('Save'));
 
-        
+        // Load the page.
+        $this->drupalGet('node/1');
+        $this->assertResponse(200);
+        $this->assertText(t('106Taipeidaanrenai road 345 ally'));
     }
 }
