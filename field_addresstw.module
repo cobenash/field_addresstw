@@ -55,12 +55,7 @@ function field_addresstw_field_validate($entity_type, $entity, $field, $instance
  * Implements hook_field_is_empty().
  */
 function field_addresstw_field_is_empty($item, $field) {
-  //若有寫郵遞區號，但是沒有寫地址，也可以給過。
-  // if(empty($item['zipcode']) and empty($item['county']) and empty($item['district']) and  empty($item['addresstw']) ){
-  //     return TRUE;
-  // }
-  // return FALSE;
-  return empty($item['addresstw']);
+  return empty($item['addresstw']) && empty($item['zipcode']) && empty($item['district']) && empty($item['county']);
 }
 
 
@@ -118,7 +113,7 @@ function field_addresstw_field_widget_form(&$form, &$form_state, $field, $instan
     switch ($instance['widget']['type']) {
         
         case 'field_addresstw_selection':
-            $widget['zipcode']= array(
+            $element['zipcode'] = $element + array(
                 '#prefix' => '<label>' . $instance['label'] . '</label><div class="addresstw_selection_wrapper" id="'. $divid .'"><div class="address_twzipcode"></div>',
                 '#type' => 'token',
                 '#attributes' => array('class' => array('edit-zipcode'),'id'=>$zipcodeId),
@@ -136,15 +131,15 @@ function field_addresstw_field_widget_form(&$form, &$form_state, $field, $instan
                     'css' => array(drupal_get_path('module', 'field_addresstw') . '/css/twzipcode.css'),
                 ),
             );
-            $widget['county']= array(
+            $element['county'] = array(
                 '#type' => 'token',
                 '#attributes' => array('class' => array('edit-county'),'id'=>$CountyId),
             );
-            $widget['district']= array(
+            $element['district'] = array(
                 '#type' => 'token',
                 '#attributes' => array('class' => array('edit-district'),'id'=>$districtId),
             );
-            $widget['addresstw']= array(
+            $element['addresstw'] = array(
                 '#type' => 'textfield',
                 '#default_value' => $addresstw,
                 '#suffix' => '</div><div class="description">'. $instance['description'].'</div>',
@@ -157,22 +152,7 @@ function field_addresstw_field_widget_form(&$form, &$form_state, $field, $instan
               );
             break;
     }
-
-    $element = $widget;
     return $element;
-  }
-
-
-/**
- * Implements hook_field_widget_error().
- */
-function field_addresstw_field_widget_error($element, $error, $form, &$form_state) {
-    switch ($error['error']) {
-      default:
-        $error_element = $element[$element['#columns'][0]];
-        break;
-    }
-    form_error($error_element, $error['message']);
   }
 
 /**
