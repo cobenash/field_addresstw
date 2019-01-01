@@ -4,6 +4,7 @@ package = Fields
 core = 7.x
 
 files[] = views/views_handler_filter_field_addresstw.inc
+files[] = field_addresstw.test
 
 ; dependencies
 dependencies[] = jquery_update

@@ -1,0 +1,110 @@
+<?php
+
+/**
+ * @file
+ * Some tests for the Field Addresstw Modules.
+ */
+
+/**
+ * Test basic functionality of field_addresstw.
+ */
+class FieldAddresstwTest extends DrupalWebTestCase {
+
+    /**
+     * Profile to use.
+     */
+    protected $profile = 'testing';
+
+    /**
+     * Admin user
+     *
+     * @var \StdClass
+     */
+    protected $adminUser;
+
+    /**
+     * Modules to enable.
+     *
+     * @var array
+     */
+    public static $modules = array(
+        'field_addresstw',
+        'jquery_update',
+        'list',
+        'node',
+        'field_ui',
+    );
+
+    /**
+     * Permissions to grant admin user.
+     *
+     * @var array
+     */
+    protected $permissions = array(
+        'access administration pages',
+        'administer content types',
+        'create sample content',
+        'edit any sample content',
+        'administer nodes',
+        'administer fields'
+    );
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getInfo() {
+        return array(
+            'name' => 'Field Addresstw Simple Test',
+            'description' => 'Confirm that the Taiwan Address Field is running correctly.',
+            'group' => 'Field Addresstw',
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp() {
+        parent::setUp(self::$modules);
+        $this->drupalCreateContentType(array('type' => 'sample'));
+        $this->adminUser = $this->drupalCreateUser($this->permissions);
+    }
+    
+    /**
+     * Tests adding and editing values on Taiwan Address Field.
+     */
+
+    public function testFieldAddressTwField(){
+        $this->drupalLogin($this->adminUser);
+        // Add a new Taiwan Address field.
+        $this->drupalGet('admin/structure/types/manage/sample/fields');
+        $edit = array(
+            'fields[_add_new_field][label]' => 'address',
+            'fields[_add_new_field][field_name]' => 'address',
+            'fields[_add_new_field][type]' => 'field_addresstw_taiwan',
+            'fields[_add_new_field][widget_type]' => 'field_addresstw_selection',
+        );
+        $this->drupalPost(NULL, $edit, t('Save'));
+        $this->drupalPost(NULL, array(), t('Save field settings'));
+        $this->drupalPost(NULL, array(), t('Save settings'));
+
+        // Test the fields exist.
+        $this->drupalGet('node/add/sample');
+        $this->assertField('field_address[und][0][zipcode]', 'Found address zipcode');
+        $this->assertField('field_address[und][0][county]', 'Found address county');
+        $this->assertField('field_address[und][0][district]', 'Found address district');
+        $this->assertField('field_address[und][0][addresstw]', 'Found address district');
+        
+        // Submit data.
+        $edit = array(
+            'field_address[und][0][zipcode]' => '106',
+            'field_address[und][0][county]' => '臺北市',
+            'field_address[und][0][district]' => '大安區',
+            'field_address[und][0][addresstw]' => '仁愛路4段345巷4弄47號2樓',
+            'title' => 'Sample Test Address Taiwan field',
+        );
+
+        $this->drupalPost(NULL, $edit, t('Save'));
+
+        
+    }
+}
