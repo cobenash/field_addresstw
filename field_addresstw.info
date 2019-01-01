@@ -3,8 +3,7 @@ description = A field for taiwan address
 package = Fields
 core = 7.x
 
-files[] = field_addresstw.install
-files[] = field_addresstw.module
+files[] = views/views_handler_filter_field_addresstw.inc
 
 ; dependencies
 dependencies[] = jquery_update

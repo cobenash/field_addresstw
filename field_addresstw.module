@@ -18,7 +18,6 @@ function field_addresstw_library() {
 
 /**
  * Implements hook_field_info().
- * @see https://api.drupal.org/api/drupal/modules%21field%21field.api.php/function/hook_field_info/7.x
  */
 function field_addresstw_field_info() {
   return array(
@@ -33,9 +32,6 @@ function field_addresstw_field_info() {
 
 /**
  * Validate this module's field data.
- *
- * If there are validation problems, add to the $errors array (passed by
- * reference). There is no return value.
  */
 function field_addresstw_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
   foreach ($items as $delta => $item) {
@@ -110,49 +106,45 @@ function field_addresstw_field_widget_form(&$form, &$form_state, $field, $instan
     $districtId = 'edit-' . $field_id . '-' . $bundle_id . '-addresstw-district';
     $zipcodeId = 'edit-' . $field_id . '-' . $bundle_id . '-addresstw-zipcode';
 
-    switch ($instance['widget']['type']) {
-        
-        case 'field_addresstw_selection':
-            $element['zipcode'] = $element + array(
-                '#prefix' => '<label>' . $instance['label'] . '</label><div class="addresstw_selection_wrapper" id="'. $divid .'"><div class="address_twzipcode"></div>',
-                '#type' => 'token',
-                '#attributes' => array('class' => array('edit-zipcode'),'id'=>$zipcodeId),
-                '#attached' => array(
-                    'library' => array(
-                        array('field_addresstw', 'zipcodetw')
-                    ),
-                    'js' => array(
-                        drupal_get_path('module', 'field_addresstw') . '/js/twzipcode.js',
-                        array(
-                            'data' => array('field_addresstw' => array('#' . $divid => $value)),
-                            'type' => 'setting',
-                        ),
-                    ),
-                    'css' => array(drupal_get_path('module', 'field_addresstw') . '/css/twzipcode.css'),
+    $element['zipcode'] = $element + array(
+        '#prefix' => '<label>' . $instance['label'] . '</label><div class="addresstw_selection_wrapper" id="'. $divid .'"><div class="address_twzipcode"></div>',
+        '#type' => 'token',
+        '#attributes' => array('class' => array('edit-zipcode'),'id'=>$zipcodeId),
+        '#attached' => array(
+            'library' => array(
+                array('field_addresstw', 'zipcodetw')
+            ),
+            'js' => array(
+                drupal_get_path('module', 'field_addresstw') . '/js/twzipcode.js',
+                array(
+                    'data' => array('field_addresstw' => array('#' . $divid => $value)),
+                    'type' => 'setting',
                 ),
-            );
-            $element['county'] = array(
-                '#type' => 'token',
-                '#attributes' => array('class' => array('edit-county'),'id'=>$CountyId),
-            );
-            $element['district'] = array(
-                '#type' => 'token',
-                '#attributes' => array('class' => array('edit-district'),'id'=>$districtId),
-            );
-            $element['addresstw'] = array(
-                '#type' => 'textfield',
-                '#default_value' => $addresstw,
-                '#suffix' => '</div><div class="description">'. $instance['description'].'</div>',
-                '#attributes' => array(
-                    'class' => array('twzipcode-address'),
-                    'placeholder'=>t('Your Address')
-                ),
-                '#size' => 30,
-                '#maxlength' => 30,
-              );
-            break;
-    }
-    return $element;
+            ),
+            'css' => array(drupal_get_path('module', 'field_addresstw') . '/css/twzipcode.css'),
+        ),
+    );
+    $element['county'] = array(
+        '#type' => 'token',
+        '#attributes' => array('class' => array('edit-county'),'id'=>$CountyId),
+    );
+    $element['district'] = array(
+        '#type' => 'token',
+        '#attributes' => array('class' => array('edit-district'),'id'=>$districtId),
+    );
+    $element['addresstw'] = array(
+        '#type' => 'textfield',
+        '#default_value' => $addresstw,
+        '#suffix' => '</div><div class="description">'. $instance['description'].'</div>',
+        '#attributes' => array(
+            'class' => array('twzipcode-address'),
+            'placeholder'=>t('Your Address')
+        ),
+        '#size' => 30,
+        '#maxlength' => 30,
+      );
+    
+      return $element;
   }
 
 /**
@@ -195,4 +187,31 @@ function field_addresstw_field_formatter_view($entity_type, $entity, $field, $in
       break;
   }
   return $element;
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function field_addresstw_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'field_addresstw') . '/views',
+  );
+}
+
+/**
+ * Get County List
+ */
+
+function addresstw_get_county(){
+  
+  $county = array(
+    '基隆市','臺北市','新北市','宜蘭縣','新竹市','新竹縣','桃園市','苗栗縣','臺中市','彰化縣',
+    '南投縣','嘉義市','嘉義縣','雲林縣','臺南市','高雄市','屏東縣','臺東縣','花蓮縣','金門縣',
+    '連江縣','澎湖縣'
+  );
+  foreach($county as $key => $value){
+    $countyList[$value]=$value;
+  }
+  return $countyList;
 }
