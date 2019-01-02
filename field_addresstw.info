@@ -1,4 +1,4 @@
-name = addresstw field
+name = Taiwan Address Field
 description = A field for taiwan address
 package = Fields
 core = 7.x
