@@ -11,8 +11,6 @@
       attach: function(context) {
         $.each(Drupal.settings.field_addresstw, function (selector) {
           var id = selector.replace("#div","edit");
-          console.log(id);
-          console.log(Drupal.settings.field_addresstw[selector]);
           var currentData = Drupal.settings.field_addresstw[selector];
 
           $(selector + ' .address_twzipcode').twzipcode({
