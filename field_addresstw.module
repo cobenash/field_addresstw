@@ -151,6 +151,7 @@ function field_addresstw_field_widget_form(&$form, &$form_state, $field, $instan
         '#type' => 'textfield',
         '#attributes' => array('class' => array('edit-zipcode element-invisible'),'id'=>$zipcodeId),
         '#title_display' => 'invisible',
+        '#weight' => 0,
         '#attached' => array(
             'library' => array(
                 array('field_addresstw', 'zipcodetw')
@@ -167,15 +168,18 @@ function field_addresstw_field_widget_form(&$form, &$form_state, $field, $instan
     );
     $element['county'] = array(
         '#type' => 'textfield',
+        '#weight' => 1,
         '#attributes' => array('class' => array('edit-county element-invisible'),'id'=>$CountyId),
     );
     $element['district'] = array(
         '#type' => 'textfield',
+        '#weight' => 2,
         '#attributes' => array('class' => array('edit-district element-invisible'),'id'=>$districtId),
     );
     $element['addresstw'] = array(
         '#type' => 'textfield',
         '#default_value' => $addresstw,
+        '#weight' => 100,
         '#suffix' => '</div><div class="description">'. $instance['description'].'</div>',
         '#attributes' => array(
             'class' => array('twzipcode-address'),
