@@ -136,6 +136,7 @@ function field_addresstw_field_widget_info() {
  * 
  */
 function field_addresstw_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  
     $field_id = str_replace("_", "-", $field['field_name']) . '-' . $langcode . '-' . $delta;
     $addresstw = isset($items[$delta]['addresstw']) ? $items[$delta]['addresstw'] : '';
     $value=isset($items[$delta]) ? $items[$delta]: '';
@@ -147,8 +148,10 @@ function field_addresstw_field_widget_form(&$form, &$form_state, $field, $instan
 
     $element['zipcode'] = $element + array(
         '#prefix' => '<label>' . $instance['label'] . '</label><div class="addresstw_selection_wrapper" id="'. $divid .'"><div class="address_twzipcode"></div>',
-        '#type' => 'token',
-        '#attributes' => array('class' => array('edit-zipcode'),'id'=>$zipcodeId),
+        '#type' => 'textfield',
+        '#attributes' => array('class' => array('edit-zipcode element-invisible'),'id'=>$zipcodeId),
+        '#title_display' => 'invisible',
+        '#weight' => 0,
         '#attached' => array(
             'library' => array(
                 array('field_addresstw', 'zipcodetw')
@@ -164,16 +167,19 @@ function field_addresstw_field_widget_form(&$form, &$form_state, $field, $instan
         ),
     );
     $element['county'] = array(
-        '#type' => 'token',
-        '#attributes' => array('class' => array('edit-county'),'id'=>$CountyId),
+        '#type' => 'textfield',
+        '#weight' => 1,
+        '#attributes' => array('class' => array('edit-county element-invisible'),'id'=>$CountyId),
     );
     $element['district'] = array(
-        '#type' => 'token',
-        '#attributes' => array('class' => array('edit-district'),'id'=>$districtId),
+        '#type' => 'textfield',
+        '#weight' => 2,
+        '#attributes' => array('class' => array('edit-district element-invisible'),'id'=>$districtId),
     );
     $element['addresstw'] = array(
         '#type' => 'textfield',
         '#default_value' => $addresstw,
+        '#weight' => 100,
         '#suffix' => '</div><div class="description">'. $instance['description'].'</div>',
         '#attributes' => array(
             'class' => array('twzipcode-address'),
@@ -185,6 +191,7 @@ function field_addresstw_field_widget_form(&$form, &$form_state, $field, $instan
     
       return $element;
   }
+
 
 /**
  * Implements hook_field_formatter_view()
