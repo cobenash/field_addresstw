@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains views_handler_filter_field_addresstw.
+ * Contains field_addresstw_filter_hanlders.
  */
 
 /**
@@ -10,7 +10,7 @@
  *
  * @ingroup views_filter_handlers
  */
-class views_handler_filter_field_addresstw extends views_handler_filter_in_operator {
+class field_addresstw_filter_hanlders extends views_handler_filter_in_operator {
   function get_value_options() {
     if (!isset($this->value_options)) {
       $this->value_options = addresstw_get_county();
