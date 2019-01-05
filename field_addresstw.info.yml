@@ -2,5 +2,4 @@ name: Taiwan Address Field
 description: A field for taiwan address
 package: Fields
 type: module
-version: 1.0-alpha1
 core: 8.x

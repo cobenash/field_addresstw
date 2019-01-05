@@ -1,16 +1,23 @@
 <?php
 
+namespace Drupal\field_addresstw\Plugin\Field\FieldType;
+
+use Drupal\Core\Field\FieldItemBase;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\TypedData\DataDefinition;
+
 /**
- * Provides a field type of baz.
- * 
+ * Plugin implementation of the 'field_addresstw' field type.
+ *
  * @FieldType(
- *   id = "baz",
- *   label = @Translation("Baz field"),
- *   default_formatter = "baz_formatter",
- *   default_widget = "baz_widget",
+ *   id = "field_addresstw",
+ *   label = @Translation("Taiwan Address Field"),
+ *   module = "field_addresstw",
+ *   description = @Translation("Create an address field for taiwan and can choose the county, district, zipcode."),
+ *   default_widget = "field_addresstw_selection",
+ *   default_formatter = "field_addresstw_full_text"
  * )
  */
-
 class FieldAddresstw extends FieldItemBase implements FieldItemInterface {
    
     /**
@@ -26,8 +33,15 @@ class FieldAddresstw extends FieldItemBase implements FieldItemInterface {
                 'addresstw' => array('type' => 'varchar', 'length' => 30, 'not null' => FALSE), //地址
             ),
             'index' = array(
-            'addresstw' => array('addresstw'),
+                'addresstw' => array('addresstw'),
             ),
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEmpty() {
+        // return empty($item['addresstw']) && empty($item['zipcode']) && empty($item['district']) && empty($item['county']);
     }
 }
