@@ -14,11 +14,11 @@ use Drupal\Core\TypedData\DataDefinition;
  *   label = @Translation("Taiwan Address Field"),
  *   module = "field_addresstw",
  *   description = @Translation("Create an address field for taiwan and can choose the county, district, zipcode."),
- *   default_widget = "field_addresstw_selection",
- *   default_formatter = "field_addresstw_full_text"
+ *   default_widget = "FieldAddresstwWidget",
+ *   default_formatter = "FieldAddresstwFormatter"
  * )
  */
-class FieldAddresstw extends FieldItemBase implements FieldItemInterface {
+class FieldAddresstw extends FieldItemBase  {
    
     /**
      * {@inheritdoc}
@@ -32,7 +32,7 @@ class FieldAddresstw extends FieldItemBase implements FieldItemInterface {
                 'zipcode' => array('type' => 'varchar', 'length' => 6, 'not null' => FALSE), //郵遞區號
                 'addresstw' => array('type' => 'varchar', 'length' => 30, 'not null' => FALSE), //地址
             ),
-            'index' = array(
+            'index' => array(
                 'addresstw' => array('addresstw'),
             ),
         );
@@ -41,7 +41,24 @@ class FieldAddresstw extends FieldItemBase implements FieldItemInterface {
     /**
      * {@inheritdoc}
      */
+    public static function propertyDefinitions(FieldStorageDefinitionInterface $field_definition) {
+        $properties = [];
+        $properties['county'] = DataDefinition::create('string')->setLabel(t('county'));
+        $properties['district'] = DataDefinition::create('string')->setLabel(t('district'));
+        $properties['zipcode'] = DataDefinition::create('string')->setLabel(t('zipcode'));
+        $properties['addresstw'] = DataDefinition::create('string')->setLabel(t('addresstw'));
+    
+        return $properties;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isEmpty() {
-        // return empty($item['addresstw']) && empty($item['zipcode']) && empty($item['district']) && empty($item['county']);
+        $addresstw = $this->get('addresstw')->getValue();
+        $zipcode = $this->get('zipcode')->getValue();
+        $district = $this->get('district')->getValue();
+        $county = $this->get('county')->getValue();
+        return empty($item['addresstw']) && empty($item['zipcode']) && empty($item['district']) && empty($item['county']);
     }
 }
