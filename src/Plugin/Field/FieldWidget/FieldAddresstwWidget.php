@@ -24,7 +24,11 @@ class FieldAddresstwWidget extends WidgetBase {
      * {@inheritdoc}
      */
     public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+      
+      $field_id = str_replace("_", "-", $this->fieldDefinition->getName()) . '-' . $items->getLangcode() . '-' . $delta;
+      $addresstw = isset($items[$delta]->addresstw) ? $items[$delta]->addresstw : '';
       $value=isset($items[$delta]->value) ? $items[$delta]->value: '';
+      // isset($element['#field_parents']) ? $bundle_id = implode('-', $element['#field_parents']) : $bundle_id = '';
       $element += [
         '#type' => 'textfield',
         '#default_value' => $value,
