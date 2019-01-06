@@ -28,6 +28,7 @@ class FieldAddresstwWidget extends WidgetBase {
       $label = $items->getFieldDefinition()->getLabel();
       $description = $items->getFieldDefinition()->getDescription();
       $addresstw = isset($items[$delta]->addresstw) ? $items[$delta]->addresstw : '';
+      $values = isset($items[$delta]->addresstw) ? $items[$delta]->getValue() : '';
       $bundle_id = $items->getFieldDefinition()->getTargetBundle();
       isset($element['#field_parents']) ? $bundle_id = implode('-', $element['#field_parents']) : $bundle_id = '';
       $divid = 'div-' . $field_id . '-' . $bundle_id . '-addresstw';
@@ -45,6 +46,9 @@ class FieldAddresstwWidget extends WidgetBase {
           'library' => [
             'field_addresstw/zipcodetw',
             'field_addresstw/widgetjs'
+          ],
+          'drupalSettings' => [
+            'field_addresstw' => ['#'.$divid => $values]
           ],
         ],
       ];

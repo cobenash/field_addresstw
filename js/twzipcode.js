@@ -14,12 +14,45 @@
 
         $context.find('.addresstw_selection_wrapper').each(function (index, element) {
           var $element = $(element);
-          var $addressTwZipCode = $element.find('.address_twzipcode');
+          var id = $element.attr('id').replace("div","edit");
+          var currentData = drupalSettings.field_addresstw['#' + $element.attr('id')];
           
+          var county = $('#' + id + '-county').val();
+          var district = $('#' + id + '-district').val();
+          var zipcode = $('#' + id + '-zipcode').val();
+          var $addressTwZipCode = $element.find('.address_twzipcode');
+
           $addressTwZipCode.twzipcode({
             'css': ['form-select twcounty', 'form-select twdistrict', 'form-text twzipcode'],
             'readonly': true,
           });
+
+          if(currentData != ""){
+            $addressTwZipCode.twzipcode('set',{
+              'county': currentData['county'],
+              'district': currentData['district'],
+              'zipcode': currentData['zipcode']
+            });
+          }
+          else if(county != "" && district != "" && zipcode != ""){
+            $addressTwZipCode.twzipcode('set', {
+              'county': county,
+              'district': district,
+              'zipcode': zipcode
+            });
+
+          }
+
+          $element.on('change',function(){
+            var county =  $(this).find('.address_twzipcode').twzipcode('get', 'county');
+            var district =  $(this).find('.address_twzipcode').twzipcode('get', 'district');
+            var zipcode =  $(this).find('.address_twzipcode').twzipcode('get', 'zipcode');
+            $('#' + id + '-county').val(county);
+            $('#' + id + '-district').val(district);
+            $('#' + id + '-zipcode').val(zipcode);
+          })
+
+
         });
       }
     }
