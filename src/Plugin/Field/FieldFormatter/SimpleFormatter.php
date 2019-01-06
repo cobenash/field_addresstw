@@ -6,18 +6,18 @@ use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
 
 /**
- * Plugin implementation of the 'FieldAddresstwFormatter' formatter.
+ * Plugin implementation of the 'SimpleFormatter' formatter.
  *
  * @FieldFormatter(
- *   id = "FieldAddresstwFormatter",
+ *   id = "SimpleFormatter",
  *   module = "field_addresstw",
- *   label = @Translation("Full Taiwan Address Text"),
+ *   label = @Translation("Simple Taiwan Address Text"),
  *   field_types = {
  *     "field_addresstw"
  *   }
  * )
  */
-class FieldAddresstwFormatter extends FormatterBase {
+class SimpleFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
@@ -30,9 +30,9 @@ class FieldAddresstwFormatter extends FormatterBase {
         '#type' => 'html_tag',
         '#tag' => 'div',
         '#attributes' => [
-          'class' => 'address-tw-information',
+          'class' => 'address-tw-information-simple',
         ],
-        '#value' =>  '<span class="addresstw-zipcode">'.$item->zipcode.'</span><span class="addresstw-county">'.$item->county.'</span><span class="addresstw-district">'.$item->district.'</span><span class="addresstw-address">'.$item->addresstw.'</span>',
+        '#value' =>  '<span class="addresstw-county">'.$item->county.'</span><span class="addresstw-district">'.$item->district.'</span><span class="addresstw-address">'.$item->addresstw.'</span>',
       ];
     }
 
