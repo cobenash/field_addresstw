@@ -27,16 +27,15 @@ class FieldAddresstwWidget extends WidgetBase {
       
       $field_id = str_replace("_", "-", $this->fieldDefinition->getName()) . '-' . $items->getLangcode() . '-' . $delta;
       $addresstw = isset($items[$delta]->addresstw) ? $items[$delta]->addresstw : '';
-      $value=isset($items[$delta]->value) ? $items[$delta]->value: '';
-      // isset($element['#field_parents']) ? $bundle_id = implode('-', $element['#field_parents']) : $bundle_id = '';
       $element += [
         '#type' => 'textfield',
-        '#default_value' => $value,
-        '#size' => 7,
-        '#maxlength' => 7,
-        '#element_validate' => [
-          [$this, 'validate'],
+        '#default_value' => $addresstw,
+        '#attributes' => [
+          'class' => ['twzipcode-address'],
+          'placeholder'=>t('Your Address')
         ],
+        '#size' => 30,
+        '#maxlength' => 30,
       ];
       return ['value' => $element];
     }
@@ -45,14 +44,14 @@ class FieldAddresstwWidget extends WidgetBase {
      * Validate the color text field.
      */
     public function validate($element, FormStateInterface $form_state) {
-      $value = $element['#value'];
-      if (strlen($value) == 0) {
-        $form_state->setValueForElement($element, '');
-        return;
-      }
-      if (!preg_match('/^#([a-f0-9]{6})$/iD', strtolower($value))) {
-        $form_state->setError($element, $this->t("Color must be a 6-digit hexadecimal value, suitable for CSS."));
-      }
+      // $value = $element['#value'];
+      // if (strlen($value) == 0) {
+      //   $form_state->setValueForElement($element, '');
+      //   return;
+      // }
+      // if (!preg_match('/^#([a-f0-9]{6})$/iD', strtolower($value))) {
+      //   $form_state->setError($element, $this->t("Color must be a 6-digit hexadecimal value, suitable for CSS."));
+      // }
     }
   
   }
