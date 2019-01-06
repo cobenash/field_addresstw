@@ -2,14 +2,11 @@
 
 .addresstw_selection_wrapper {
     display: flex;
+    align-items: center;
 }
 
 .addresstw_selection_wrapper label {
     display: none;
-}
-
-.addresstw_selection_wrapper select {
-    height: 100%;
 }
 
 .addresstw_selection_wrapper .form-item {

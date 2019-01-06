@@ -19,18 +19,26 @@ use Drupal\Core\Form\FormStateInterface;
  * )
  */
 class FieldAddresstwWidget extends WidgetBase {
-
     /**
      * {@inheritdoc}
      */
     public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
 
       $field_id = str_replace("_", "-", $this->fieldDefinition->getName()) . '-' . $items->getLangcode() . '-' . $delta;
+      $label = $items->getFieldDefinition()->getLabel();
+      $description = $items->getFieldDefinition()->getDescription();
       $addresstw = isset($items[$delta]->addresstw) ? $items[$delta]->addresstw : '';
+      $bundle_id = $items->getFieldDefinition()->getTargetBundle();
+      isset($element['#field_parents']) ? $bundle_id = implode('-', $element['#field_parents']) : $bundle_id = '';
+      $divid = 'div-' . $field_id . '-' . $bundle_id . '-addresstw';
+      $CountyId = 'edit-' . $field_id . '-' . $bundle_id . '-addresstw-county';
+      $districtId = 'edit-' . $field_id . '-' . $bundle_id . '-addresstw-district';
+      $zipcodeId = 'edit-' . $field_id . '-' . $bundle_id . '-addresstw-zipcode';
+
       $element['zipcode'] = $element + [
-        '#prefix' => '<div class="addresstw_selection_wrapper"><div class="address_twzipcode"></div>',
+        '#prefix' => '<div class="addresstw_selection_wrapper" id="'. $divid .'"><div class="address_twzipcode"></div>',
         '#type' => 'textfield',
-        '#attributes' => ['class' => ['edit-zipcode visually-hidden']],
+        '#attributes' => ['class' => ['edit-zipcode visually-hidden'], 'id' => [$zipcodeId]],
         '#title_display' => 'invisible',
         '#weight' => 0,
         '#attached' => [
@@ -44,13 +52,13 @@ class FieldAddresstwWidget extends WidgetBase {
         '#type' => 'textfield',
         '#title_display' => 'invisible',
         '#weight' => 1,
-        '#attributes' => ['class' => ['edit-county visually-hidden']],
+        '#attributes' => ['class' => ['edit-county visually-hidden'], 'id' => [$CountyId]],
       ];
       $element['district'] = [
         '#type' => 'textfield',
         '#title_display' => 'invisible',
         '#weight' => 2,
-        '#attributes' => ['class' => ['edit-district visually-hidden']],
+        '#attributes' => ['class' => ['edit-district visually-hidden'], 'id' => [$districtId]],
       ];
       $element['addresstw'] = [
         '#type' => 'textfield',

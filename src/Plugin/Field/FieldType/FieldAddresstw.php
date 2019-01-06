@@ -59,6 +59,6 @@ class FieldAddresstw extends FieldItemBase  {
         $zipcode = $this->get('zipcode')->getValue();
         $district = $this->get('district')->getValue();
         $county = $this->get('county')->getValue();
-        return empty($item['addresstw']) && empty($item['zipcode']) && empty($item['district']) && empty($item['county']);
+        return empty($addresstw) && empty($zipcode) && empty($district) && empty($county);
     }
 }
