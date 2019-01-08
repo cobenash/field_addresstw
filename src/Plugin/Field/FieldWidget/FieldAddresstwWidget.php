@@ -28,7 +28,10 @@ class FieldAddresstwWidget extends WidgetBase {
       $label = $items->getFieldDefinition()->getLabel();
       $description = $items->getFieldDefinition()->getDescription();
       $addresstw = isset($items[$delta]->addresstw) ? $items[$delta]->addresstw : '';
-      $values = isset($items[$delta]->addresstw) ? $items[$delta]->getValue() : '';
+      $county = isset($items[$delta]->county) ? $items[$delta]->county : '';
+      $zipcode = isset($items[$delta]->zipcode) ? $items[$delta]->zipcode : '';
+      $district = isset($items[$delta]->district) ? $items[$delta]->district : '';
+
       $bundle_id = $items->getFieldDefinition()->getTargetBundle();
       isset($element['#field_parents']) ? $bundle_id = implode('-', $element['#field_parents']) : $bundle_id = '';
       $divid = 'div-' . $field_id . '-' . $bundle_id . '-addresstw';
@@ -39,6 +42,7 @@ class FieldAddresstwWidget extends WidgetBase {
       $element['zipcode'] = $element + [
         '#prefix' => '<div class="addresstw_selection_wrapper" id="'. $divid .'"><div class="address_twzipcode"></div>',
         '#type' => 'textfield',
+        '#default_value' => $zipcode,
         '#attributes' => ['class' => ['edit-zipcode visually-hidden'], 'id' => [$zipcodeId]],
         '#title_display' => 'invisible',
         '#weight' => 0,
@@ -47,20 +51,19 @@ class FieldAddresstwWidget extends WidgetBase {
             'field_addresstw/zipcodetw',
             'field_addresstw/widgetjs'
           ],
-          'drupalSettings' => [
-            'field_addresstw' => ['#'.$divid => $values]
-          ],
         ],
       ];
       $element['county'] = [
         '#type' => 'textfield',
         '#title_display' => 'invisible',
+        '#default_value' => $county,
         '#weight' => 1,
         '#attributes' => ['class' => ['edit-county visually-hidden'], 'id' => [$CountyId]],
       ];
       $element['district'] = [
         '#type' => 'textfield',
         '#title_display' => 'invisible',
+        '#default_value' => $district,
         '#weight' => 2,
         '#attributes' => ['class' => ['edit-district visually-hidden'], 'id' => [$districtId]],
       ];

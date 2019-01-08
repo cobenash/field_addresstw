@@ -15,7 +15,6 @@
         $context.find('.addresstw_selection_wrapper').each(function (index, element) {
           var $element = $(element);
           var id = $element.attr('id').replace("div","edit");
-          var currentData = drupalSettings.field_addresstw['#' + $element.attr('id')];
           
           var county = $('#' + id + '-county').val();
           var district = $('#' + id + '-district').val();
@@ -26,15 +25,7 @@
             'css': ['form-select twcounty', 'form-select twdistrict', 'form-text twzipcode'],
             'readonly': true,
           });
-
-          if(currentData != ""){
-            $addressTwZipCode.twzipcode('set',{
-              'county': currentData['county'],
-              'district': currentData['district'],
-              'zipcode': currentData['zipcode']
-            });
-          }
-          else if(county != "" && district != "" && zipcode != ""){
+          if(county != "" || district != "" || zipcode != ""){
             $addressTwZipCode.twzipcode('set', {
               'county': county,
               'district': district,
